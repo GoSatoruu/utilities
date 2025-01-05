@@ -76,6 +76,17 @@ def txt_to_docx(txt_path, docx_path):
         return False
     return True
 
+def delete_txt_file(txt_path):
+    """Delete the temporary text file after conversion."""
+    try:
+        if os.path.exists(txt_path):
+            os.remove(txt_path)
+            print(f"Deleted temporary text file: {txt_path}")
+        else:
+            print(f"Text file not found: {txt_path}")
+    except Exception as e:
+        print(f"Error deleting text file {txt_path}: {e}")
+
 def process_files(csv_file_path):
     """Process the PDF files listed in the CSV and convert them to DOCX."""
     count = 0
@@ -99,6 +110,9 @@ def process_files(csv_file_path):
                 if not txt_to_docx(txt_path, docx_path):
                     print(f"Skipping DOCX conversion for {txt_path}.")
                     continue  # Skip to the next file if DOCX conversion failed
+                
+                # Delete the temporary TXT file after conversion
+                delete_txt_file(txt_path)
                 
                 print(f"Successfully processed {count} file(s): {pdf_path}")
                 
